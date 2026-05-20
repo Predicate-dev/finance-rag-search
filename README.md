@@ -77,6 +77,9 @@ GRAPHRAG_MODEL_CHECKPOINT=artifacts/minigpt_finance/model.pt \
 .venv/bin/uvicorn graphrag_pipeline.interface.api:app --host 127.0.0.1 --port 8000
 ```
 
+By default, the API seeds a demo financial-news corpus into an empty database. Set
+`GRAPHRAG_SEED_DEMO=false` if you want to start with an empty index.
+
 Then query it:
 
 ```bash
@@ -90,6 +93,32 @@ curl -X POST http://127.0.0.1:8000/v1/rag/query \
     "generation": {"max_tokens": 120, "temperature": 0.25},
     "debug": true
   }'
+```
+
+List indexed articles:
+
+```bash
+curl http://127.0.0.1:8000/v1/articles
+```
+
+Add your own article:
+
+```bash
+curl -X POST http://127.0.0.1:8000/v1/articles \
+  -H "Content-Type: application/json" \
+  -d '{
+    "source_url": "api://oracle-cloud-margin",
+    "title": "Oracle raises cloud guidance as margins improve",
+    "body": "Oracle raised cloud guidance after strong enterprise demand and improved margins.",
+    "published_at": "2026-05-20T12:00:00Z",
+    "source": "api"
+  }'
+```
+
+Force-load the demo corpus again:
+
+```bash
+curl -X POST http://127.0.0.1:8000/v1/demo/seed
 ```
 
 Minimal local run:

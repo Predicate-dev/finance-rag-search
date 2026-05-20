@@ -6,6 +6,53 @@ from typing import Any
 
 
 @dataclass(frozen=True)
+class ArticleIngestRequest:
+    source_url: str
+    title: str
+    body: str
+    published_at: datetime | None = None
+    source: str = "api"
+
+    @classmethod
+    def from_mapping(cls, value: dict[str, Any]) -> "ArticleIngestRequest":
+        return cls(
+            source_url=str(value["source_url"]),
+            title=str(value["title"]),
+            body=str(value["body"]),
+            published_at=parse_datetime(value.get("published_at")),
+            source=str(value.get("source", "api")),
+        )
+
+
+@dataclass(frozen=True)
+class ArticleResult:
+    id: str | None
+    source_url: str
+    title: str
+    body_preview: str
+    published_at: datetime | None
+    source: str
+
+
+@dataclass(frozen=True)
+class IngestArticleResponse:
+    article_id: str
+    indexed: bool
+
+    def to_dict(self) -> dict[str, Any]:
+        return dataclass_to_jsonable(self)
+
+
+@dataclass(frozen=True)
+class SeedDemoResponse:
+    indexed_article_ids: list[str]
+    total_articles: int
+
+    def to_dict(self) -> dict[str, Any]:
+        return dataclass_to_jsonable(self)
+
+
+@dataclass(frozen=True)
 class SearchFilters:
     tickers: list[str] = field(default_factory=list)
     entities: list[str] = field(default_factory=list)

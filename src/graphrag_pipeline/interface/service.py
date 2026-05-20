@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from graphrag_pipeline.domain import RetrievedChunk, RetrievedContext
+from graphrag_pipeline.entities import FinancialEntityExtractor
 from graphrag_pipeline.interface.prompt_templates import (
     DEFAULT_PROMPT_TEMPLATES,
     PromptTemplateRegistry,
@@ -152,7 +153,8 @@ class SearchGenerationService:
             return False
 
         text_blob = " ".join([chunk.title, chunk.source_url, chunk.text]).lower()
-        if filters.tickers and not any(ticker.lower() in text_blob for ticker in filters.tickers):
+        ticker_terms = expand_ticker_terms(filters.tickers)
+        if ticker_terms and not any(term in text_blob for term in ticker_terms):
             return False
         if filters.entities and not any(entity.lower() in text_blob for entity in filters.entities):
             return False
@@ -233,3 +235,13 @@ def parse_metadata_datetime(value: Any) -> datetime | None:
     if parsed.tzinfo is None:
         return parsed.replace(tzinfo=timezone.utc)
     return parsed.astimezone(timezone.utc)
+
+
+def expand_ticker_terms(tickers: list[str]) -> set[str]:
+    terms = {ticker.lower() for ticker in tickers}
+    known = FinancialEntityExtractor.KNOWN_COMPANIES
+    for company, ticker in known.items():
+        if ticker.lower() in terms or company.lower() in terms:
+            terms.add(ticker.lower())
+            terms.add(company.lower())
+    return terms

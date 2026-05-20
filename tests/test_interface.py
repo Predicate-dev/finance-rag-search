@@ -84,3 +84,60 @@ def test_api_query_endpoint(monkeypatch, tmp_path) -> None:
     payload = response.json()
     assert payload["answer"]
     assert payload["prompt"]["rendered"].startswith("<SYSTEM>")
+
+
+def test_api_seeds_demo_articles_and_queries_them(monkeypatch, tmp_path) -> None:
+    from fastapi.testclient import TestClient
+
+    monkeypatch.setenv("GRAPHRAG_DB_PATH", str(tmp_path / "seeded-api.db"))
+    monkeypatch.setenv("GRAPHRAG_SEED_DEMO", "true")
+    monkeypatch.delenv("GRAPHRAG_MODEL_CHECKPOINT", raising=False)
+
+    from graphrag_pipeline.interface.api import create_app
+
+    client = TestClient(create_app())
+    articles = client.get("/v1/articles").json()
+    assert articles["count"] >= 6
+    assert any("Apple" in article["title"] for article in articles["articles"])
+
+    response = client.post(
+        "/v1/rag/query",
+        json={
+            "query": "How is Apple's supply chain looking after earnings?",
+            "filters": {"tickers": ["AAPL"]},
+            "retrieval": {"vector_top_k": 4, "graph_neighbors_per_entity": 4},
+            "debug": True,
+        },
+    )
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["retrieval"]["chunks"]
+    assert "Apple" in payload["prompt"]["rendered"]
+
+
+def test_api_can_post_custom_article(monkeypatch, tmp_path) -> None:
+    from fastapi.testclient import TestClient
+
+    monkeypatch.setenv("GRAPHRAG_DB_PATH", str(tmp_path / "post-api.db"))
+    monkeypatch.setenv("GRAPHRAG_SEED_DEMO", "false")
+    monkeypatch.delenv("GRAPHRAG_MODEL_CHECKPOINT", raising=False)
+
+    from graphrag_pipeline.interface.api import create_app
+
+    client = TestClient(create_app())
+    response = client.post(
+        "/v1/articles",
+        json={
+            "source_url": "api://oracle-cloud-margin",
+            "title": "Oracle raises cloud guidance as margins improve",
+            "body": "Oracle raised cloud guidance after strong enterprise demand and improved margins.",
+            "published_at": "2026-05-20T12:00:00Z",
+            "source": "api-test",
+        },
+    )
+    assert response.status_code == 200
+    assert response.json()["indexed"] is True
+
+    articles = client.get("/v1/articles").json()
+    assert articles["count"] == 1
+    assert articles["articles"][0]["source"] == "api-test"

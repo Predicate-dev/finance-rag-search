@@ -44,7 +44,7 @@ class SQLiteGraphRAGRepository(AbstractContextManager["SQLiteGraphRAGRepository"
 
     def __init__(self, database_path: str | Path) -> None:
         self.database_path = Path(database_path)
-        self.connection = sqlite3.connect(self.database_path)
+        self.connection = sqlite3.connect(self.database_path, check_same_thread=False)
         self.connection.row_factory = sqlite3.Row
         self.connection.execute("PRAGMA foreign_keys = ON")
 
@@ -142,6 +142,32 @@ class SQLiteGraphRAGRepository(AbstractContextManager["SQLiteGraphRAGRepository"
             source=row["source"],
             created_at=_str_to_dt(row["created_at"]) or datetime.now(timezone.utc),
         )
+
+    def count_articles(self) -> int:
+        row = self.connection.execute("SELECT COUNT(*) AS count FROM articles").fetchone()
+        return int(row["count"])
+
+    def list_articles(self, limit: int = 50) -> list[Article]:
+        rows = self.connection.execute(
+            """
+            SELECT * FROM articles
+            ORDER BY COALESCE(published_at, created_at) DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+        return [
+            Article(
+                id=row["id"],
+                source_url=row["source_url"],
+                title=row["title"],
+                body=row["body"],
+                published_at=_str_to_dt(row["published_at"]),
+                source=row["source"],
+                created_at=_str_to_dt(row["created_at"]) or datetime.now(timezone.utc),
+            )
+            for row in rows
+        ]
 
     def upsert_chunks(self, chunks: Iterable[TextChunk]) -> None:
         rows = []
