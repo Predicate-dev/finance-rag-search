@@ -1,0 +1,100 @@
+<CONTEXT>
+Apple beat analyst estimates after services revenue grew faster than expected. Management said supply chain pressure eased during the quarter and margins improved.
+<GRAPH>
+- Apple REPORTS_EARNINGS Earnings (sentiment=0.82)
+- Apple SUPPLY_CHAIN_LINK Supply Chain (sentiment=0.71)
+<QUESTION>
+How is Apple's supply chain looking after earnings?
+<ANSWER>
+Apple's supply chain appears healthier after earnings. The retrieved context says pressure eased, while stronger services revenue and improved margins support a bullish near-term read.
+
+<CONTEXT>
+Tesla missed delivery estimates after weaker demand in Europe and rising price pressure. Analysts downgraded the stock and warned that margins could decline.
+<GRAPH>
+- Tesla REPORTS_EARNINGS Earnings (sentiment=-0.76)
+- Tesla MENTIONED_WITH Europe Demand (sentiment=-0.64)
+<QUESTION>
+What is the market concern around Tesla?
+<ANSWER>
+The main concern is weaker demand and margin pressure. Missed delivery estimates and analyst downgrades point to a bearish setup unless demand stabilizes.
+
+<CONTEXT>
+Microsoft reported strong cloud growth and raised guidance. Azure revenue accelerated as enterprise AI demand remained resilient.
+<GRAPH>
+- Microsoft REPORTS_EARNINGS Earnings (sentiment=0.88)
+- Microsoft PARTNERS_WITH Enterprise AI (sentiment=0.69)
+<QUESTION>
+Why are investors bullish on Microsoft?
+<ANSWER>
+Investors are bullish because cloud revenue accelerated, AI demand stayed resilient, and management raised guidance. Those signals support stronger future earnings expectations.
+
+<CONTEXT>
+Nvidia shares rallied after data center revenue reached a record. Management said supply constraints were improving and hyperscaler orders remained strong.
+<GRAPH>
+- Nvidia REPORTS_EARNINGS Earnings (sentiment=0.93)
+- Nvidia SUPPLY_CHAIN_LINK Data Center Supply (sentiment=0.73)
+<QUESTION>
+What drove Nvidia's rally?
+<ANSWER>
+The rally was driven by record data center revenue, improving supply constraints, and strong hyperscaler orders. The context is strongly bullish.
+
+<CONTEXT>
+JPMorgan beat profit estimates as net interest income stayed strong. Executives warned that credit losses could rise if unemployment increases.
+<GRAPH>
+- JPMorgan REPORTS_EARNINGS Earnings (sentiment=0.47)
+- JPMorgan MENTIONED_WITH Credit Losses (sentiment=-0.38)
+<QUESTION>
+Is the JPMorgan update positive or negative?
+<ANSWER>
+It is mixed but modestly positive. Profit and net interest income beat expectations, although rising credit-loss risk limits the bullish read.
+
+<CONTEXT>
+Amazon shares rose after retail margins improved and AWS growth stabilized. Management said consumer demand remained resilient despite macro uncertainty.
+<GRAPH>
+- Amazon REPORTS_EARNINGS Earnings (sentiment=0.75)
+- Amazon MENTIONED_WITH AWS (sentiment=0.62)
+<QUESTION>
+What is the read-through from Amazon earnings?
+<ANSWER>
+The read-through is constructive. Better retail margins, stable AWS growth, and resilient demand indicate improving execution despite macro uncertainty.
+
+<CONTEXT>
+Intel cut guidance after weak PC demand and delays in a manufacturing roadmap. Analysts said competitive pressure could weigh on margins.
+<GRAPH>
+- Intel REPORTS_EARNINGS Guidance (sentiment=-0.82)
+- Intel MENTIONED_WITH Manufacturing Roadmap (sentiment=-0.56)
+<QUESTION>
+Why is Intel sentiment bearish?
+<ANSWER>
+Sentiment is bearish because guidance was cut, PC demand was weak, and manufacturing delays increase competitive and margin risk.
+
+<CONTEXT>
+Meta announced a larger buyback after advertising growth accelerated. Expenses stayed controlled, although management continued to invest heavily in AI infrastructure.
+<GRAPH>
+- Meta CAPITAL_RETURN Buyback (sentiment=0.77)
+- Meta MENTIONED_WITH AI Infrastructure (sentiment=0.35)
+<QUESTION>
+How should investors view Meta's update?
+<ANSWER>
+The update is positive. Faster advertising growth, controlled expenses, and a larger buyback outweigh the spending risk from AI infrastructure.
+
+<CONTEXT>
+Bank of America warned that deposit costs remained elevated. Loan growth slowed and management said net interest income could face pressure next quarter.
+<GRAPH>
+- Bank of America REPORTS_EARNINGS Earnings (sentiment=-0.51)
+- Bank of America MENTIONED_WITH Deposit Costs (sentiment=-0.58)
+<QUESTION>
+What is pressuring Bank of America?
+<ANSWER>
+Elevated deposit costs, slower loan growth, and pressure on net interest income are weighing on Bank of America. The signal is moderately bearish.
+
+<CONTEXT>
+AMD raised its AI chip revenue forecast after strong orders from cloud customers. Gross margin guidance improved and analysts upgraded the stock.
+<GRAPH>
+- AMD REPORTS_EARNINGS Guidance (sentiment=0.86)
+- AMD PARTNERS_WITH Cloud Customers (sentiment=0.67)
+<QUESTION>
+What changed for AMD?
+<ANSWER>
+AMD's AI chip outlook improved. Strong cloud orders, higher revenue guidance, better gross margins, and analyst upgrades create a bullish setup.
+
